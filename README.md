@@ -5,6 +5,8 @@
 ## 학습 키워드
 - `Subclassing`
 - `ModernCollection View`
+- `URLSession`
+- `Paging`
 - `URLCache`
 
 ## 구현 내용
