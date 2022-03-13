@@ -26,6 +26,23 @@
 - 상속을 활용하여 공통기능을 갖는 ProductUpadateViewController를 두고 각각의 뷰컨들을 서브클래싱하였습니다.
 
 # 고민한 내용
+### URLSession을 활용한 네트워킹 모델 구현
+
+- `APIService` 프로토콜을 생성하고, 네트워킹에 필요한 메서드들을 extension부에 기본 구현했습니다.
+    - `doDataTask`메서드는 Generic메서드로 구현되었습니다.
+    - `URLRequest` 를 파라미터로 받아 dataTask를 수행하며 파싱을 진행하고 `Result<T, Error> -> Void`  형태의 CompletionHandler로 처리할 수 있게 설계했습니다.
+- `ProductService`는 상품 관련 API통신을 담당하는 타입입니다.
+    - `APIService`프로토콜을 채택하여 기본 구현된 메서드들을 사용해 RestfulAPI에 요청, 응답 및 파싱을 수행합니다.
+
+### UserDefaults의 사용
+
+- 판매자 identifier 및 password를 `UserDefault`를 활용하여 `UserDefaultUtility`  타입에서 관리할 수 있도록 구현해 주었습니다.
+
+### JSON 파싱을 어디서 해야 할지
+
+- 기존에는 doDataTask가 데이터 통신만을 진행하여 `(Result<Data, Error>)` 형태의 completionHandler를 갖고 있었습니다.
+- 현업에서는 dataTask와 JSON파싱을 나눠 놓게 되면, 과정이 번거로워 나누지 않는다는 다른 리뷰어 분의 조언을 듣게 되어 JSON 파싱을 하지 않으면 데이터를 쓰지 못하는 점을 감안해 `doDataTask` 메서드에서 JSON 데이터를 파싱하는 기능도 처리하게 변경했습니다.
+
 ### 캐싱
 
 캐싱의 경우 용량이 큰 이미지에 대해서만 진행하였습니다. Caching 정책과 디스크 Chacing을 쉽게 설정해 줄 수 있는 `URLCache` 를 사용하여 구현하였습니다. 
